@@ -1,0 +1,5 @@
+{
+  "name": "SignalAI",
+  "description": "AI-powered signal analysis platform for noise detection, frequency analysis, and pattern recognition.",
+  "requestFramePermissions": []
+}
