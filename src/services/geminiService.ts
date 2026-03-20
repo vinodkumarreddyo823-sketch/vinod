@@ -1,6 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let aiInstance: GoogleGenAI | null = null;
+
+function getAI() {
+  if (!aiInstance) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is missing. Please set it in your environment variables.");
+    }
+    aiInstance = new GoogleGenAI({ apiKey });
+  }
+  return aiInstance;
+}
 
 export interface SignalAnalysis {
   noiseLevel: string;
@@ -11,6 +22,7 @@ export interface SignalAnalysis {
 }
 
 export async function analyzeSignal(signalData: number[], sampleRate: number): Promise<SignalAnalysis> {
+  const ai = getAI();
   // We'll send a subset of data if it's too large, or a summary
   const dataSummary = signalData.slice(0, 500).join(", ");
   
